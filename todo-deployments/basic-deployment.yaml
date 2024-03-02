@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: todo-app
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: todo-app
+    template:
+        metadata:
+            labels:
+                app: todo-app
+        spec:
+            containers:
+                - name: todo-app
+                  image: hamzapro305/todo-app
+                  resources:
+                      limits:
+                          memory: "128Mi"
+                          cpu: "500m"
+                  ports:
+                      - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: todo-app-service
+spec:
+    selector:
+        app: todo-app
+    type: LoadBalancer
+    ports:
+        - port: 3000
+          targetPort: 3000

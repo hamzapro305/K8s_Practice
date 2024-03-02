@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: surgeon-theme-app
+spec:
+    replicas: 10
+    selector:
+        matchLabels:
+            app: surgeon-theme-app
+    template:
+        metadata:
+            labels:
+                app: surgeon-theme-app
+        spec:
+            containers:
+                - name: surgeon-theme-app
+                  image: hamzapro305/surgeon-theme
+                  resources:
+                      limits:
+                          memory: "128Mi"
+                          cpu: "500m"
+                  ports:
+                      - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: surgeon-theme-service
+spec:
+    selector:
+        app: surgeon-theme-app
+    ports:
+        - port: 3000
+          targetPort: 80
